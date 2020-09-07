@@ -14,8 +14,9 @@ if [ -z "$CERTBOT_DOMAIN" ] || [ -z "$CERTBOT_VALIDATION" ]; then
  verified automatically, i.e. without the need for a webroot verification or
  manually adding TXT records.
 
- - You need to provide either a session ID, or login credentials through
-   environment variables (see examples below). Session ID should be faster.
+ - This script requires either a session ID (faster), or login credentials. 
+   These can be added in the included config.sh file, or through
+   environment variables (see examples below).
 
  Example usage:
 
@@ -49,6 +50,19 @@ HELP
   exit 1
 fi
 
+## Import config params ################################################
+
+## https://stackoverflow.com/questions/59895
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE"  ]; do
+  DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /*  ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
+echo "Received request for" "${CERTBOT_DOMAIN}"
+cd ${DIR}
+source config.sh
 
 ## Auth parameters for curl ############################################
 
